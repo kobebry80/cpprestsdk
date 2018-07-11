@@ -1378,12 +1378,6 @@ private:
                     {
                         p_request_context->decompressor = std::make_unique<web::http::details::compression::stream_decompressor>(alg);
                     }
-                    else
-                    {
-                        utility::string_t error = U("Unsupported compression algorithm in the Content Encoding header: ");
-                        error += encoding;
-                        p_request_context->report_exception(http_exception(error));
-                    }
                 }
 
                 // Signal that the headers are available.

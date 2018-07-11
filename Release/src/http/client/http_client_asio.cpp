@@ -1254,10 +1254,6 @@ private:
             {
                 m_decompressor = utility::details::make_unique<web::http::details::compression::stream_decompressor>(alg);
             }
-            else
-            {
-                report_exception(std::runtime_error("Unsupported compression algorithm in the Content Encoding header: " + utility::conversions::to_utf8string(content_encoding)));
-            }
         }
 
         // Check for HEAD requests and status codes which cannot contain a

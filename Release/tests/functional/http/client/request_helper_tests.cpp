@@ -30,6 +30,22 @@ namespace tests { namespace functional { namespace http { namespace client {
 SUITE(request_helper_tests)
 {
 
+TEST_FIXTURE(uri_address, do_not_fail_on_content_encoding_chunked)
+{
+    if (web::http::details::compression::stream_compressor::is_supported())
+    {
+        test_http_server::scoped_server scoped(m_uri);
+        auto& server = *scoped.server();
+        http_client client(m_uri);
+
+        server.next_request().then([](test_request *p_request) {
+            p_request->reply(200, U("OK"), { {header_names::content_encoding, U("chunked")} });
+        });
+
+        http_asserts::assert_response_equals(client.request(methods::GET).get(), status_codes::OK);
+    }
+}
+
 TEST_FIXTURE(uri_address, compress_and_decompress)
 {
     if (web::http::details::compression::stream_compressor::is_supported())
